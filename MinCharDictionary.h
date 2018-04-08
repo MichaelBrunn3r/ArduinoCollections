@@ -37,7 +37,7 @@ class MinCharDictionary {
 				// Insert the entry
 				if(keys[i] == tmpKeys[m]) {
 					// Replace the old value
-					tmpVals[m] == values[i];
+					tmpVals[m] = values[i];
 				} else {
 					memmove(tmpKeys+l+1, tmpKeys+l, (tmpSize-l) * sizeof(char));
 					memmove(tmpVals+l+1, tmpVals+l, (tmpSize-l) * sizeof(T_VAL));
