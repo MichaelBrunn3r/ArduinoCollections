@@ -10,7 +10,7 @@
 #endif
 
 template <typename T_VAL>
-class MinCharDictionary {
+class FixedCharDictionary {
 	private:
 		void populate(const byte entryc, char keys[], T_VAL values[]) {
 			char tmpKeys[entryc] = {};
@@ -56,33 +56,34 @@ class MinCharDictionary {
 		}
 		struct S {
 			byte size:7;
-			byte lastSearchIdx:7; // The Index of the last found Key. Used to optmise "hasKey() get()" sequences.
+			byte lastEntryIdx:7; // The Index of the last found Entry. Used to optmise "hasKey() -> get()" sequences.
 		} mContainer;
 	public:
 		char* mKeys; // Array containing the keys of all Dictionary entries.
 		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
 
-		explicit MinCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
+		explicit FixedCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
 
 		/**
-		 * Returns the number of Dictionary entries
+		 * Returns the number of Dictionary entries.
 		 **/
 		byte size() {
 			return mContainer.size;
 		}
 
 		/**
-		 * Returns true if the Dictionary contains an entry with that key.
+		 * Returns true if the Dictionary contains an entry with that key, false otherwise.
 		 **/
 		bool hasKey(const char key) {
-			if(mKeys[mContainer.lastSearchIdx] == key) return true;
+			if(mKeys[mContainer.lastEntryIdx] == key) return true;
 
 			short l = 0;
 			short r = mContainer.size-1;
 			short m = l + (r-l)/2;
 
+			// Search for the key in mKeys using binary search.
 			while(l <= r) {
 				m = l + (r-l)/2;
 				if(key > mKeys[m]){
@@ -91,7 +92,7 @@ class MinCharDictionary {
 					r = m-1;
 				} else if(key == mKeys[m]) {
 					// Found key. Return true
-					mContainer.lastSearchIdx = m;
+					mContainer.lastEntryIdx = m;
 					return true;
 				}
 			}
@@ -101,17 +102,17 @@ class MinCharDictionary {
 		}
 
 		/**
-		 * Returns the value of the Dictionary entry with that key.
+		 * Returns the value of the Dictionary entry with that key or null if it doesn't exist.
 		 **/
 		T_VAL* get(const char key) {
-			if(hasKey(key)) return &mValues[mContainer.lastSearchIdx];
+			if(hasKey(key)) return &mValues[mContainer.lastEntryIdx];
 			else return NULL;
 		};
 
 		/**
 		 * Deconstructor
 		 **/
-		~MinCharDictionary() {
+		~FixedCharDictionary() {
 			delete[] mKeys;
 			delete[] mValues;
 		}

@@ -3,10 +3,10 @@
 #include <iostream>
 #include <string.h>
 #define CharDictionary_TEST
-#include "../MinCharDictionary.h"
+#include "../FixedCharDictionary.h"
 
-MinCharDictionary<int>* createDict(size_t entryc, char str[], int nums[]) {
-    return new MinCharDictionary<int>(entryc, str, nums);
+FixedCharDictionary<int>* createDict(size_t entryc, char str[], int nums[]) {
+    return new FixedCharDictionary<int>(entryc, str, nums);
 }
 
 TEST_CASE("Create Dict") { 
@@ -17,7 +17,7 @@ TEST_CASE("Create Dict") {
             for(int i=0; i<strlen(str); i++) {
                 nums[i] = i;
             }
-            MinCharDictionary<int> dict = MinCharDictionary<int>(strlen(str), str, nums);
+            FixedCharDictionary<int> dict = FixedCharDictionary<int>(strlen(str), str, nums);
 
             REQUIRE(dict.size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
@@ -40,7 +40,7 @@ TEST_CASE("Create Dict") {
                     if(strSorted[i] == str[k]) numsSorted[i] = nums[k]; 
                 }
             }
-            MinCharDictionary<int> dict = MinCharDictionary<int>(strlen(str), str, nums);
+            FixedCharDictionary<int> dict = FixedCharDictionary<int>(strlen(str), str, nums);
 
             REQUIRE(dict.size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
@@ -59,7 +59,7 @@ TEST_CASE("Create Dict") {
             for(int i=0; i<strlen(str); i++) {
                 nums[i] = i;
             }
-            MinCharDictionary<int>* dict = createDict(strlen(str), str, nums);
+            FixedCharDictionary<int>* dict = createDict(strlen(str), str, nums);
 
             REQUIRE(dict->size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
@@ -84,7 +84,7 @@ TEST_CASE("Create Dict") {
                     if(strSorted[i] == str[k]) numsSorted[i] = nums[k]; 
                 }
             }
-            MinCharDictionary<int>* dict = createDict(strlen(str), str, nums);
+            FixedCharDictionary<int>* dict = createDict(strlen(str), str, nums);
 
             REQUIRE(dict->size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
@@ -101,7 +101,7 @@ TEST_CASE("Create Dict") {
 
 TEST_CASE("Method hasKey") {
     SECTION("with all possible chars") {
-        byte length = 127;
+        byte length = 128;
         char str[length] = {};
         for(int i=0; i<length; i++) {
             str[i] = (char)i;
@@ -111,12 +111,12 @@ TEST_CASE("Method hasKey") {
         for(int i=0; i<length; i++) {
             nums[i] = i;
         }
-        MinCharDictionary<int> dict = MinCharDictionary<int>(length, str, nums);
+        FixedCharDictionary<int> dict = FixedCharDictionary<int>(length, str, nums);
     }
 }
 
 int main(int argc, char* argv[]) {
-    std::cout << "MinCharDictionary size: " << sizeof(MinCharDictionary<int>) << std::endl;
+    std::cout << "FixedCharDictionary size: " << sizeof(FixedCharDictionary<int>) << std::endl;
     int result = Catch::Session().run( argc, argv );
     return result;
 }
