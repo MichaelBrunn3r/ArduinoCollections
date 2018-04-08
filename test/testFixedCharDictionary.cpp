@@ -22,9 +22,9 @@ TEST_CASE("Create Dict") {
 
             REQUIRE(dict.size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
-                REQUIRE(dict.mKeys[i] == str[i]);
-                REQUIRE(dict.mValues[i] == nums[i]);
-                REQUIRE(*dict.get(dict.mKeys[i]) == nums[i]);
+                REQUIRE(dict.keys()[i] == str[i]);
+                REQUIRE(dict.values()[i] == nums[i]);
+                REQUIRE(*dict.get(dict.keys()[i]) == nums[i]);
                 REQUIRE(dict.hasKey(str[i]));
             }
         }
@@ -45,9 +45,9 @@ TEST_CASE("Create Dict") {
 
             REQUIRE(dict.size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
-                REQUIRE(dict.mKeys[i] == strSorted[i]);
-                REQUIRE(dict.mValues[i] == numsSorted[i]);
-                REQUIRE(*dict.get(dict.mKeys[i]) == numsSorted[i]);
+                REQUIRE(dict.keys()[i] == strSorted[i]);
+                REQUIRE(dict.values()[i] == numsSorted[i]);
+                REQUIRE(*dict.get(dict.keys()[i]) == numsSorted[i]);
                 REQUIRE(dict.hasKey(strSorted[i]));
             }
         }
@@ -64,9 +64,9 @@ TEST_CASE("Create Dict") {
 
             REQUIRE(dict->size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
-                REQUIRE(dict->mKeys[i] == str[i]);
-                REQUIRE(dict->mValues[i] == nums[i]);
-                REQUIRE(*dict->get(dict->mKeys[i]) == nums[i]);
+                REQUIRE(dict->keys()[i] == str[i]);
+                REQUIRE(dict->values()[i] == nums[i]);
+                REQUIRE(*dict->get(dict->keys()[i]) == nums[i]);
                 REQUIRE(dict->hasKey(str[i]));
             }
             delete dict;
@@ -89,9 +89,9 @@ TEST_CASE("Create Dict") {
 
             REQUIRE(dict->size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
-                REQUIRE(dict->mKeys[i] == strSorted[i]);
-                REQUIRE(dict->mValues[i] == numsSorted[i]);
-                REQUIRE(*dict->get(dict->mKeys[i]) == numsSorted[i]);
+                REQUIRE(dict->keys()[i] == strSorted[i]);
+                REQUIRE(dict->values()[i] == numsSorted[i]);
+                REQUIRE(*dict->get(dict->keys()[i]) == numsSorted[i]);
                 REQUIRE(dict->hasKey(strSorted[i]));
             }
             delete dict;

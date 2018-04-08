@@ -59,10 +59,9 @@ class FixedCharDictionary {
 			byte lastEntryIdx:7; // The Index of the last found Entry. Used to optmise "hasKey() -> get()" sequences.
 			// TODO use remaining 2 Bits
 		} mContainer;
-	public:
 		char* mKeys; // Array containing the keys of all Dictionary entries.
 		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
-
+	public:
 		explicit FixedCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
@@ -118,6 +117,14 @@ class FixedCharDictionary {
 				mValues[mContainer.lastEntryIdx] = value;
 				return true;
 			} else return false;
+		}
+
+		char* keys() {
+			return mKeys;
+		}
+
+		T_VAL* values() {
+			return mValues;
 		}
 
 		/**
