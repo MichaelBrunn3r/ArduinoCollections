@@ -110,6 +110,16 @@ class FixedCharDictionary {
 		};
 
 		/**
+		 * Updates the value of an Entry. Returns false if an Entry with that key doesn't exist.
+		 **/
+		bool update(const char key, T_VAL value) {
+			if(hasKey(key)) {
+				mValues[mContainer.lastEntryIdx] = value;
+				return true;
+			} else return false;
+		}
+
+		/**
 		 * Deconstructor
 		 **/
 		~FixedCharDictionary() {
