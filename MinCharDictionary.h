@@ -1,5 +1,5 @@
 /*
-	A Dictionary optimised ASCII characters
+	A Dictionary optimised for ASCII characters. Can only save 128 entries.
 */
 #ifndef CharDictionary_HEADER
 #define CharDictionary_HEADER
@@ -13,8 +13,8 @@ template <typename T_VAL>
 class MinCharDictionary {
 	private:
 		void populate(const byte entryc, char keys[], T_VAL values[]) {
-			char* tmpKeys = new char[entryc];
-			T_VAL* tmpVals = new T_VAL[entryc];
+			char tmpKeys[entryc] = {};
+			T_VAL tmpVals[entryc] = {};
 			byte tmpSize = 0;
 
 			for(int i=0; i<entryc; i++) {
@@ -47,34 +47,56 @@ class MinCharDictionary {
 				}
 			}
 
-			mSize = tmpSize;
-			mKeys = new char[mSize];
-			mValues = new T_VAL[mSize];
+			mContainer.size = tmpSize;
+			mKeys = new char[mContainer.size];
+			mValues = new T_VAL[mContainer.size];
 
 			memcpy(mKeys, tmpKeys, tmpSize * sizeof(char));
 			memcpy(mValues, tmpVals, tmpSize * sizeof(T_VAL));
-
-			delete[] tmpKeys;
-			delete[] tmpVals;
 		}
+		struct S {
+			byte size:7;
+			byte lastSearchIdx:7;
+		} mContainer;
 	public:
-		byte mSize = 0;
 		char* mKeys;
 		T_VAL* mValues;
-		explicit MinCharDictionary(const byte entryc, char keys[], T_VAL values[]) {
+
+		explicit MinCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
+
+		byte size() {
+			return mContainer.size;
+		}
+
 		bool hasKey(const char key) {
-			for(int i=0; i<mSize; i++) {
-				if(mKeys[i] == key) return true;
+			if(mKeys[mContainer.lastSearchIdx] == key) return true;
+
+			short l = 0;
+			short r = mContainer.size-1;
+			short m = l + (r-l)/2;
+
+			while(l <= r) {
+				m = l + (r-l)/2;
+				if(key > mKeys[m]){
+					l = m+1;
+				} else if(key < mKeys[m]) {
+					r = m-1;
+				} else if(key == mKeys[m]) {
+					// Found key. Return true
+					mContainer.lastSearchIdx = m;
+					return true;
+				}
 			}
+
+			// Key wasn't found. Return false.
 			return false;
 		}
+
 		T_VAL* get(const char key) {
-			for(int i=0; i<mSize; i++) {
-				if(mKeys[i] == key) return &mValues[i];
-			}
-			return NULL;
+			if(hasKey(key)) return &mValues[mContainer.lastSearchIdx];
+			else return NULL;
 		};
 
 		~MinCharDictionary() {

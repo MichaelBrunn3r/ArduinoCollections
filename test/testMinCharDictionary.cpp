@@ -19,10 +19,12 @@ TEST_CASE("Create Dict") {
             }
             MinCharDictionary<int> dict = MinCharDictionary<int>(strlen(str), str, nums);
 
-            REQUIRE(dict.mSize == strlen(str));
+            REQUIRE(dict.size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
                 REQUIRE(dict.mKeys[i] == str[i]);
                 REQUIRE(dict.mValues[i] == nums[i]);
+                REQUIRE(*dict.get(dict.mKeys[i]) == nums[i]);
+                REQUIRE(dict.hasKey(str[i]));
             }
         }
         SECTION("with duplicates") {
@@ -40,10 +42,12 @@ TEST_CASE("Create Dict") {
             }
             MinCharDictionary<int> dict = MinCharDictionary<int>(strlen(str), str, nums);
 
-            REQUIRE(dict.mSize == strlen(strSorted));
+            REQUIRE(dict.size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
                 REQUIRE(dict.mKeys[i] == strSorted[i]);
                 REQUIRE(dict.mValues[i] == numsSorted[i]);
+                REQUIRE(*dict.get(dict.mKeys[i]) == numsSorted[i]);
+                REQUIRE(dict.hasKey(strSorted[i]));
             }
         }
     }
@@ -57,10 +61,12 @@ TEST_CASE("Create Dict") {
             }
             MinCharDictionary<int>* dict = createDict(strlen(str), str, nums);
 
-            REQUIRE(dict->mSize == strlen(str));
+            REQUIRE(dict->size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
                 REQUIRE(dict->mKeys[i] == str[i]);
                 REQUIRE(dict->mValues[i] == nums[i]);
+                REQUIRE(*dict->get(dict->mKeys[i]) == nums[i]);
+                REQUIRE(dict->hasKey(str[i]));
             }
             delete dict;
         }
@@ -80,10 +86,12 @@ TEST_CASE("Create Dict") {
             }
             MinCharDictionary<int>* dict = createDict(strlen(str), str, nums);
 
-            REQUIRE(dict->mSize == strlen(strSorted));
+            REQUIRE(dict->size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
                 REQUIRE(dict->mKeys[i] == strSorted[i]);
                 REQUIRE(dict->mValues[i] == numsSorted[i]);
+                REQUIRE(*dict->get(dict->mKeys[i]) == numsSorted[i]);
+                REQUIRE(dict->hasKey(strSorted[i]));
             }
             delete dict;
         }
@@ -92,20 +100,23 @@ TEST_CASE("Create Dict") {
 }
 
 TEST_CASE("Method hasKey") {
-    char str[] = "abcdefghjklmnop";
-    int nums[strlen(str)] = {};
-    for(int i=0; i<strlen(str); i++) {
-        nums[i] = i;
-    }
-    MinCharDictionary<int> dict = MinCharDictionary<int>(strlen(str), str, nums);
-    REQUIRE(dict.mSize == strlen(str));
+    SECTION("with all possible chars") {
+        byte length = 127;
+        char str[length] = {};
+        for(int i=0; i<length; i++) {
+            str[i] = (char)i;
+        }
 
-    for(int i=0; i<strlen(str); i++) {
-        REQUIRE(dict.hasKey(str[i]));
+        int nums[length] = {};
+        for(int i=0; i<length; i++) {
+            nums[i] = i;
+        }
+        MinCharDictionary<int> dict = MinCharDictionary<int>(length, str, nums);
     }
 }
 
 int main(int argc, char* argv[]) {
+    std::cout << "MinCharDictionary size: " << sizeof(MinCharDictionary<int>) << std::endl;
     int result = Catch::Session().run( argc, argv );
     return result;
 }
