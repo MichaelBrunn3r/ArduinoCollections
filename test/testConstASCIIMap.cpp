@@ -1,12 +1,12 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch2.hpp>
 #include <string.h>
-#define FixedASCIIDictionary_TEST
-#include "../FixedASCIIDictionary.h"
+#define ConstASCIIMap_TEST
+#include "../ConstASCIIMap.h"
 #include "./testUtils.h"
 
-FixedASCIIDictionary<int>* createDict(size_t entryc, char str[], int nums[]) {
-    return new FixedASCIIDictionary<int>(entryc, str, nums);
+ConstASCIIMap<int>* createDict(size_t entryc, char str[], int nums[]) {
+    return new ConstASCIIMap<int>(entryc, str, nums);
 }
 
 TEST_CASE("Create Dict") { 
@@ -17,7 +17,7 @@ TEST_CASE("Create Dict") {
             for(int i=0; i<strlen(str); i++) {
                 nums[i] = i;
             }
-            FixedASCIIDictionary<int> dict = FixedASCIIDictionary<int>(strlen(str), str, nums);
+            ConstASCIIMap<int> dict = ConstASCIIMap<int>(strlen(str), str, nums);
 
             REQUIRE(dict.size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
@@ -40,7 +40,7 @@ TEST_CASE("Create Dict") {
                     if(strSorted[i] == str[k]) numsSorted[i] = nums[k]; 
                 }
             }
-            FixedASCIIDictionary<int> dict = FixedASCIIDictionary<int>(strlen(str), str, nums);
+            ConstASCIIMap<int> dict = ConstASCIIMap<int>(strlen(str), str, nums);
 
             REQUIRE(dict.size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
@@ -59,7 +59,7 @@ TEST_CASE("Create Dict") {
             for(int i=0; i<strlen(str); i++) {
                 nums[i] = i;
             }
-            FixedASCIIDictionary<int>* dict = createDict(strlen(str), str, nums);
+            ConstASCIIMap<int>* dict = createDict(strlen(str), str, nums);
 
             REQUIRE(dict->size() == strlen(str));
             for(int i=0; i<strlen(str); i++) {
@@ -84,7 +84,7 @@ TEST_CASE("Create Dict") {
                     if(strSorted[i] == str[k]) numsSorted[i] = nums[k]; 
                 }
             }
-            FixedASCIIDictionary<int>* dict = createDict(strlen(str), str, nums);
+            ConstASCIIMap<int>* dict = createDict(strlen(str), str, nums);
 
             REQUIRE(dict->size() == strlen(strSorted));
             for(int i=0; i<strlen(strSorted); i++) {
@@ -111,7 +111,7 @@ TEST_CASE("Method hasKey") {
         for(int i=0; i<length; i++) {
             nums[i] = i;
         }
-        FixedASCIIDictionary<int> dict = FixedASCIIDictionary<int>(length, str, nums);
+        ConstASCIIMap<int> dict = ConstASCIIMap<int>(length, str, nums);
     }
 }
 
@@ -122,7 +122,7 @@ TEST_CASE("Method Update") {
     randStr(entryc, str, strlen(alphabet_a2z), alphabet_a2z, true);
     randNums(entryc, nums, 1000, 10000);
 
-    FixedASCIIDictionary<int> dict = FixedASCIIDictionary<int>(entryc, str, nums);
+    ConstASCIIMap<int> dict = ConstASCIIMap<int>(entryc, str, nums);
     REQUIRE(dict.size() == entryc);
 
     for(int i=0; i<dict.size(); i++) {
@@ -134,7 +134,7 @@ TEST_CASE("Method Update") {
 }
 
 int main(int argc, char* argv[]) {
-    std::cout << "FixedASCIIDictionary size: " << sizeof(FixedASCIIDictionary<int>) << std::endl;
+    std::cout << "ConstASCIIMap size: " << sizeof(ConstASCIIMap<int>) << std::endl;
     int result = Catch::Session().run( argc, argv );
     return result;
 }

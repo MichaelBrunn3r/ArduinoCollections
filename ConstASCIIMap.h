@@ -1,22 +1,23 @@
 /**
- * A Dictionary that has fixed size and uses chars as keys.
+ * A Map with a fixed number of entries and only uses ASCII characters as keys.
  **/
-#ifndef FixedASCIIDictionary_HEADER
-#define FixedASCIIDictionary_HEADER
+#ifndef ConstASCIIMap_HEADER
+#define ConstASCIIMap_HEADER
 
-#if defined FixedASCIIDictionary_TEST
+#if defined ConstASCIIMap_TEST
 	#include <cstring>
 	typedef unsigned char byte;
 #endif
 
 template <typename T_VAL>
-class FixedASCIIDictionary {
+class ConstASCIIMap {
 	private:
 		void populate(const byte entryc, char keys[], T_VAL values[]) {
 			char tmpKeys[entryc] = {};
 			T_VAL tmpVals[entryc] = {};
 			byte tmpSize = 0;
 
+			// Sort all entries. When duplicates exist, the last value is used.
 			for(int i=0; i<entryc; i++) {
 				short l = 0;
 				short r = tmpSize-1;
@@ -62,7 +63,7 @@ class FixedASCIIDictionary {
 		char* mKeys; // Array containing the keys of all Dictionary entries.
 		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
 	public:
-		explicit FixedASCIIDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
+		explicit ConstASCIIMap(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
 
@@ -130,7 +131,7 @@ class FixedASCIIDictionary {
 		/**
 		 * Deconstructor
 		 **/
-		~FixedASCIIDictionary() {
+		~ConstASCIIMap() {
 			delete[] mKeys;
 			delete[] mValues;
 		}
