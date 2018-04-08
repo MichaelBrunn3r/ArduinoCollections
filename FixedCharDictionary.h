@@ -1,5 +1,5 @@
-/*
- * A Dictionary optimised for ASCII characters. Can only save 128 entries.
+/**
+ * A Dictionary that has fixed size and uses chars as keys.
  **/
 #ifndef CharDictionary_HEADER
 #define CharDictionary_HEADER
@@ -55,8 +55,9 @@ class FixedCharDictionary {
 			memcpy(mValues, tmpVals, tmpSize * sizeof(T_VAL));
 		}
 		struct S {
-			byte size:7;
+			byte size:7; // Size can only be from 0 to 128
 			byte lastEntryIdx:7; // The Index of the last found Entry. Used to optmise "hasKey() -> get()" sequences.
+			// TODO use remaining 2 Bits
 		} mContainer;
 	public:
 		char* mKeys; // Array containing the keys of all Dictionary entries.
