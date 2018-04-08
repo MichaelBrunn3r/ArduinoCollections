@@ -1,16 +1,16 @@
 /**
  * A Dictionary that has fixed size and uses chars as keys.
  **/
-#ifndef CharDictionary_HEADER
-#define CharDictionary_HEADER
+#ifndef FixedASCIIDictionary_HEADER
+#define FixedASCIIDictionary_HEADER
 
-#if defined CharDictionary_TEST
+#if defined FixedASCIIDictionary_TEST
 	#include <cstring>
 	typedef unsigned char byte;
 #endif
 
 template <typename T_VAL>
-class FixedCharDictionary {
+class FixedASCIIDictionary {
 	private:
 		void populate(const byte entryc, char keys[], T_VAL values[]) {
 			char tmpKeys[entryc] = {};
@@ -62,7 +62,7 @@ class FixedCharDictionary {
 		char* mKeys; // Array containing the keys of all Dictionary entries.
 		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
 	public:
-		explicit FixedCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
+		explicit FixedASCIIDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
 
@@ -130,7 +130,7 @@ class FixedCharDictionary {
 		/**
 		 * Deconstructor
 		 **/
-		~FixedCharDictionary() {
+		~FixedASCIIDictionary() {
 			delete[] mKeys;
 			delete[] mValues;
 		}
