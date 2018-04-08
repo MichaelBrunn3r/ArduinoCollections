@@ -1,6 +1,3 @@
-/**
- * A Map with a fixed number of entries and only ASCII characters as keys.
- **/
 #ifndef ConstASCIIMap_HEADER
 #define ConstASCIIMap_HEADER
 
@@ -12,6 +9,11 @@
 	#include "Arduino.h"
 #endif
 
+/**
+ * @brief A Map with a fixed number of entries and only ASCII characters as keys
+ * 
+ * @tparam T_VAL The type of the mapped values
+ */
 template <typename T_VAL>
 class ConstASCIIMap {
 	private:
