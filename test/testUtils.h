@@ -1,5 +1,7 @@
 #include <cstring>
 #include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 const char alphabet_a2z[] = "abcdefghijklmnopqrstuvwxyz";
 const char alphabet_A2Z[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -8,6 +10,7 @@ const char alphabet_digit[] = "0123456789";
 
 template <typename T_ARR>
 void fisherYatesShuffle(size_t length, T_ARR arr[]) {
+    srand(std::time(NULL));
     for(int i=0; i<length-2; i++) {
         int k = i + (rand() % (length-i));
         T_ARR tmp = arr[i];
@@ -15,7 +18,6 @@ void fisherYatesShuffle(size_t length, T_ARR arr[]) {
         arr[k] = tmp;
     }
 }
-
 void randStr(const size_t len, char str[], const size_t lenAlphabet, const char alphabet[], const bool uniqueChars) {
     if(uniqueChars) {
         char randAlphabet[lenAlphabet] = {};
@@ -36,6 +38,7 @@ void randNums(const size_t len, int nums[], int min, int max) {
         nums[i] = min + (rand() % (max-min));
     }
 }
+
 
 template <typename T_ARR>
 void printArray(size_t len, T_ARR arr[], const char prefix[], const char seperator[], const char suffix[]) {
