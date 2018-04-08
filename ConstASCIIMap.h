@@ -1,12 +1,15 @@
 /**
- * A Map with a fixed number of entries and only uses ASCII characters as keys.
+ * A Map with a fixed number of entries and only ASCII characters as keys.
  **/
 #ifndef ConstASCIIMap_HEADER
 #define ConstASCIIMap_HEADER
 
 #if defined ConstASCIIMap_TEST
+	// Simulate Arduino.h while testing
 	#include <cstring>
 	typedef unsigned char byte;
+#else
+	#include "Arduino.h"
 #endif
 
 template <typename T_VAL>
@@ -17,21 +20,21 @@ class ConstASCIIMap {
 			T_VAL tmpVals[entryc] = {};
 			byte tmpSize = 0;
 
-			// Sort all entries. When duplicates exist, the last value is used.
+			// Sort all entries using binary sort. When duplicates exist, the last value is used.
 			for(int i=0; i<entryc; i++) {
-				short l = 0;
-				short r = tmpSize-1;
-				short m = l + (r-l)/2;
+				short l = 0; // Left limit
+				short r = tmpSize-1; // Right limit
+				short m = l + (r-l)/2; // Middle
 
 				// Search the position where to put the entry
 				while(l <= r) {
-					m = l + (r-l)/2;
+					m = l + (r-l)/2; // Calculate new middle
 					if(keys[i] > tmpKeys[m]){
-						l = m+1;
+						l = m+1; // Position must be right of the middle
 					} else if(keys[i] < tmpKeys[m]) {
-						r = m-1;
+						r = m-1; // Position must be left of the middle
 					} else if(keys[i] == tmpKeys[m]) {
-						break;
+						break; // Position is exactly the middle (can be duplicate)
 					}
 				}
 
@@ -40,8 +43,11 @@ class ConstASCIIMap {
 					// Replace the old value
 					tmpVals[m] = values[i];
 				} else {
-					memmove(tmpKeys+l+1, tmpKeys+l, (tmpSize-l) * sizeof(char));
+					// Shift all values, starting with the found position, one to the right
+					memmove(tmpKeys+l+1, tmpKeys+l, (tmpSize-l) * sizeof(char)); 
 					memmove(tmpVals+l+1, tmpVals+l, (tmpSize-l) * sizeof(T_VAL));
+
+					// Insert new value
 					tmpKeys[l] = keys[i];
 					tmpVals[l] = values[i];
 					tmpSize++;
@@ -56,7 +62,7 @@ class ConstASCIIMap {
 			memcpy(mValues, tmpVals, tmpSize * sizeof(T_VAL));
 		}
 		struct S {
-			byte size:7; // Size can only be from 0 to 128
+			byte size:7; // Size can only be from 0 to 128 (128 ASCII characters)
 			byte lastEntryIdx:7; // The Index of the last found Entry. Used to optmise "hasKey() -> get()" sequences.
 			// TODO use remaining 2 Bits
 		} mContainer;
@@ -80,17 +86,17 @@ class ConstASCIIMap {
 		bool hasKey(const char key) {
 			if(mKeys[mContainer.lastEntryIdx] == key) return true;
 
-			short l = 0;
-			short r = mContainer.size-1;
-			short m = l + (r-l)/2;
+			short l = 0; // Left limit
+			short r = mContainer.size-1; // Right limit
+			short m = l + (r-l)/2; // Middle
 
 			// Search for the key in mKeys using binary search.
 			while(l <= r) {
-				m = l + (r-l)/2;
+				m = l + (r-l)/2; // Calculate new middle
 				if(key > mKeys[m]){
-					l = m+1;
+					l = m+1; // Searched key is right of the middle
 				} else if(key < mKeys[m]) {
-					r = m-1;
+					r = m-1; // Searched key is left of the middle
 				} else if(key == mKeys[m]) {
 					// Found key. Return true
 					mContainer.lastEntryIdx = m;
