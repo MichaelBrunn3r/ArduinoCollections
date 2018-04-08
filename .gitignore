@@ -1,3 +1,2 @@
 test/testDictionary
-test/Makefile
-test/testFixedCharDictionary
+test/testFixedASCIIDictionary
