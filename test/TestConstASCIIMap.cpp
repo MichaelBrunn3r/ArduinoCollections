@@ -3,7 +3,7 @@
 #include <string.h>
 #define ConstASCIIMap_TEST
 #include "../ConstASCIIMap.h"
-#include "./testUtils.h"
+#include "./TestUtils.h"
 
 ConstASCIIMap<int>* createDict(size_t entryc, char str[], int nums[]) {
     return new ConstASCIIMap<int>(entryc, str, nums);
