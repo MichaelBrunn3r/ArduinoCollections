@@ -60,22 +60,22 @@ class ConstASCIIMap {
 			byte lastEntryIdx:7; // The Index of the last found Entry. Used to optmise "hasKey() -> get()" sequences.
 			// TODO use remaining 2 Bits
 		} mContainer;
-		char* mKeys; // Array containing the keys of all Dictionary entries.
-		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
+		char* mKeys; // Array containing the keys of all Map entries.
+		T_VAL* mValues; //  Array containing the values of all Map entries.
 	public:
 		explicit ConstASCIIMap(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
 
 		/**
-		 * Returns the number of Dictionary entries.
+		 * Returns the number of Map entries.
 		 **/
 		byte size() {
 			return mContainer.size;
 		}
 
 		/**
-		 * Returns true if the Dictionary contains an entry with that key, false otherwise.
+		 * Returns true if the Map contains an entry with that key, false otherwise.
 		 **/
 		bool hasKey(const char key) {
 			if(mKeys[mContainer.lastEntryIdx] == key) return true;
@@ -103,7 +103,7 @@ class ConstASCIIMap {
 		}
 
 		/**
-		 * Returns the value of the Dictionary entry with that key or null if it doesn't exist.
+		 * Returns the value of the Map entry with that key or null if it doesn't exist.
 		 **/
 		T_VAL* get(const char key) {
 			if(hasKey(key)) return &mValues[mContainer.lastEntryIdx];
