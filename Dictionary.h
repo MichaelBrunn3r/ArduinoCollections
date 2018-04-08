@@ -1,8 +1,6 @@
 #ifndef Dictionary_HEADER
 #define Dictionary_HEADER
 
-#include "Arduino.h"
-
 template <typename T_KEY, typename T_VAL>
 class Dictionary {
 	private:
@@ -10,16 +8,13 @@ class Dictionary {
 		size_t mCapacity;
 		T_KEY* mKeys;
 		T_VAL* mValues;
-		void resize() {
-			resizeTo(mCapacity * 2);
-		};
-		void resizeTo(int newCapacity) {
+		void resize(int newCapacity) {
 			if(newCapacity != mCapacity) {
 				T_KEY* newKeys = new T_KEY[newCapacity];
 				T_VAL* newValues = new T_VAL[newCapacity];
 
 				memcpy(newKeys, mKeys, newCapacity > mCapacity ? mCapacity * sizeof(T_KEY) : newCapacity * sizeof(T_KEY));
-				memcpy(newValues, mValues,  newCapacity > mCapacity ? mCapacity * sizeof(T_KEY) : newCapacity * sizeof(T_KEY));
+				memcpy(newValues, mValues, newCapacity > mCapacity ? mCapacity * sizeof(T_VAL) : newCapacity * sizeof(T_VAL));
 
 				mCapacity = newCapacity;
 				delete[] mKeys;
@@ -69,7 +64,7 @@ class Dictionary {
 			}
 
 			// Add new Key-Value pair
-			if(isFull()) resize();
+			if(isFull()) resize(mCapacity * 2);
 			mKeys[size()] = key;
 			mValues[size()] = val;
 			mSize++;
@@ -84,7 +79,7 @@ class Dictionary {
 					newCapacity *= 2;
 					overflow = newCapacity - (mSize + entryc);
 				}
-				if(newCapacity > mCapacity) resizeTo(newCapacity);
+				if(newCapacity > mCapacity) resize(newCapacity);
 			}
 
 			for(int i=0; i<entryc; i++) {
