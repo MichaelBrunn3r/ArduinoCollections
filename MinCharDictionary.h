@@ -1,6 +1,6 @@
 /*
-	A Dictionary optimised for ASCII characters. Can only save 128 entries.
-*/
+ * A Dictionary optimised for ASCII characters. Can only save 128 entries.
+ **/
 #ifndef CharDictionary_HEADER
 #define CharDictionary_HEADER
 
@@ -56,20 +56,26 @@ class MinCharDictionary {
 		}
 		struct S {
 			byte size:7;
-			byte lastSearchIdx:7;
+			byte lastSearchIdx:7; // The Index of the last found Key. Used to optmise "hasKey() get()" sequences.
 		} mContainer;
 	public:
-		char* mKeys;
-		T_VAL* mValues;
+		char* mKeys; // Array containing the keys of all Dictionary entries.
+		T_VAL* mValues; //  Array containing the values of all Dictionary entries.
 
 		explicit MinCharDictionary(const byte entryc, char keys[], T_VAL values[]) : mContainer({0,0}) {
 			populate(entryc, keys, values);
 		}
 
+		/**
+		 * Returns the number of Dictionary entries
+		 **/
 		byte size() {
 			return mContainer.size;
 		}
 
+		/**
+		 * Returns true if the Dictionary contains an entry with that key.
+		 **/
 		bool hasKey(const char key) {
 			if(mKeys[mContainer.lastSearchIdx] == key) return true;
 
@@ -94,11 +100,17 @@ class MinCharDictionary {
 			return false;
 		}
 
+		/**
+		 * Returns the value of the Dictionary entry with that key.
+		 **/
 		T_VAL* get(const char key) {
 			if(hasKey(key)) return &mValues[mContainer.lastSearchIdx];
 			else return NULL;
 		};
 
+		/**
+		 * Deconstructor
+		 **/
 		~MinCharDictionary() {
 			delete[] mKeys;
 			delete[] mValues;
