@@ -2,8 +2,8 @@
 #include <catch2.hpp>
 #include <string.h>
 #define ConstASCIIMap_TEST
-#include "../ConstASCIIMap.h"
-#include "./TestUtils.h"
+#include "ConstASCIIMap.h"
+#include "TestUtils.h"
 
 ConstASCIIMap<int>* createDict(size_t entryc, char str[], int nums[]) {
     return new ConstASCIIMap<int>(entryc, str, nums);
